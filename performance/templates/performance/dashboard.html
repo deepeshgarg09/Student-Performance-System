@@ -1,0 +1,46 @@
+{% extends 'performance/base.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+
+<h2>Welcome, {{ user.username }}</h2>
+
+{% if user.is_authenticated %}
+    <form action="{% url 'logout' %}" method="post">
+        {% csrf_token %}
+        <button type="submit">Logout</button>
+    </form>
+{% endif %}
+
+<h3>Your Marks</h3>
+<table>
+    <tr>
+        <th>Subject</th>
+        <th>Marks Obtained</th>
+    </tr>
+    {% for mark in marks %}
+    <tr>
+        <td>{{ mark.subject.name }}</td>
+        <td>{{ mark.marks_obtained }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<h3>Highest Scorers</h3>
+<table>
+    <tr>
+        <th>Subject</th>
+        <th>Highest Marks</th>
+    </tr>
+    {% for scorer in highest_scorers %}
+    <tr>
+        <td>{{ scorer.subject__name }}</td>
+        <td>{{ scorer.max_marks }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<h3>Overall Highest Scorer</h3>
+<p>{{ overall_highest_scorer.student__username }} with an average of {{ overall_highest_scorer.avg_marks }}</p>
+{% endblock %}
