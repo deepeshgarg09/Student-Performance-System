@@ -1,5 +1,8 @@
 from django.contrib.auth.models import AbstractUser, UserManager
 from django.db import models
+from django.dispatch import receiver
+from django.core.cache import cache
+from django.db.models.signals import post_save, post_delete
 
 class StudentManager(UserManager):
     def create_superuser(self, username, email=None, password=None, **extra_fields):
@@ -61,3 +64,10 @@ class Marks(models.Model):
             models.Index(fields=['marks_obtained']),
         ]
         unique_together = ('student', 'subject')
+
+@receiver(post_save, sender=Marks)
+@receiver(post_delete, sender=Marks)
+@receiver(post_save, sender=Subject)
+@receiver(post_delete, sender=Subject)
+def clear_cache(sender, **kwargs):
+    cache.clear()  # Clears the entire cache

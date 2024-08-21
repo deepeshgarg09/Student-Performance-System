@@ -59,7 +59,7 @@ def student_dashboard(request):
             'overall_highest_scorer': overall_highest_scorer
         }
 
-        cache.set(cache_key, context, 60 * 15)  # Cache for 15 minutes
+        cache.set(cache_key, context, 60 * 30)  # Cache for 30 minutes
 
     return render(request, 'performance/dashboard.html', context)
 
